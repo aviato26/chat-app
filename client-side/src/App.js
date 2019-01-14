@@ -3,11 +3,16 @@ import './App.css';
 
 class App extends Component {
 
-sendUserData = () => {
-  navigator.geolocation.watchPosition((pos) => {
-    sessionStorage.setItem('lat', pos.coords.latitude);
-    sessionStorage.setItem('long', pos.coords.longitude);
-    /*
+sendUserData = (e) => {
+
+let id;
+
+  let options = {
+    enableHighAccuracy: false,
+    timeout: 5000
+  };
+
+  id = navigator.geolocation.watchPosition((pos) => {
     fetch('http://localhost:5000/', {
       method: "POST",
       headers: {
@@ -15,21 +20,26 @@ sendUserData = () => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-
+          lat: pos.coords.latitude,
+          long: pos.coords.longitude
       })
     })
     .then(data => data.text())
     .then(res => console.log(res))
-    .catch(err => console.log(err))*/
-  }, (err) => console.log(err))
-  setInterval(() => console.log(sessionStorage), 3000)
+    .catch(err => console.log(err))
+  }, (err) => console.log(err), options)
+
+  if(e.target.textContent === 'Stop'){
+    navigator.geolocation.clearWatch(id)
+  }
 }
 
   render() {
     return (
       <div className="App">
         <h1>nosedive</h1>
-        <button onClick={this.sendUserData} style={{width: '100px', height: '100px'}}></button>
+        <button onClick={this.sendUserData} style={{width: '100px', height: '100px'}}>Start</button>
+        <button onClick={this.sendUserData} style={{width: '100px', height: '100px'}}>Stop</button>
       </div>
     );
   }

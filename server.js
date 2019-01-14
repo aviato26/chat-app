@@ -1,10 +1,9 @@
 
 const express = require('express');
 const app = express();
-const coords = require('./serverMiddleWare/coordinates.js');
+const coords = require('./serverMiddleWare/setCoordinates.js');
 const parser = require('body-parser');
-
-
+const sql = require('./models').sequelize
 
 app.use(parser());
 
@@ -19,4 +18,7 @@ app.post('/', coords, (req, res) => {
 
 })
 
-app.listen(5000, () => console.log('server up and running'))
+sql.sync()
+   .then(() => {
+     app.listen(5000, console.log('server is running'))
+   })
