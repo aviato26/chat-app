@@ -8,14 +8,20 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id: {
-        type: Sequelize.INTEGER
-      },
       name: {
         type: Sequelize.STRING
       },
-      location: {
+      email: {
+        type: Sequelize.STRING
+      },
+      latitude: {
         type: Sequelize.INTEGER
+      },
+      longitude: {
+        type: Sequelize.INTEGER
+      },
+      active: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

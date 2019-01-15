@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const coords = require('./serverMiddleWare/setCoordinates.js');
 const parser = require('body-parser');
+const use = require('./serverMiddleWare/find.js');
 const sql = require('./models').sequelize
 
 app.use(parser());
@@ -14,7 +15,11 @@ app.use((req, res, next) => {
   next();
 })
 
-app.post('/', coords, (req, res) => {
+app.post('/signup', coords, (req, res) => {
+  
+})
+
+app.post('/signout', use, (req, res) => {
 
 })
 
