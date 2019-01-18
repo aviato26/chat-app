@@ -1,10 +1,10 @@
 
 let users = require('../models').User;
 
-let user = (req) => {
+let user = (req, res) => {
   users.find()
-  .then(data => console.log(data))
-  .catch(err => err)
+  .then(data => res.send(data))
+  .catch(err => res.send(data))
 }
 
 module.exports = user

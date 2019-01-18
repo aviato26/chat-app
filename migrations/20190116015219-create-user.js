@@ -14,14 +14,17 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
+      password: {
+        type: Sequelize.STRING
+      },
+      active: {
+        type: Sequelize.BOOLEAN
+      },
       latitude: {
         type: Sequelize.INTEGER
       },
       longitude: {
         type: Sequelize.INTEGER
-      },
-      active: {
-        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

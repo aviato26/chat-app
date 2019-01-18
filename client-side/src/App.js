@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
 import Signup from './components/signup.js';
+import {BrowserRouter, Route, Redirect} from 'react-router-dom';
+import Home from './components/home.js';
 import './App.css';
 
 class App extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      name: '',
-      email: '',
-      active: false
-    }
-  }
 
 /*
 sendUserData = (e) => {
@@ -67,7 +61,7 @@ let getName = document.querySelector('input').value
   .catch(err => console.log(err))
 }
 */
-
+/*
 createUser = (e) => {
   e.preventDefault();
   navigator.geolocation.getCurrentPosition((pos) => {
@@ -84,7 +78,13 @@ createUser = (e) => {
       })
     })
     .then(data => data.text())
-    .then(req => console.log(req))
+    .then(res => {
+      if(res === 'user created'){
+        return <Redirect to='/home' />
+      } else {
+        console.log('form is invalid')
+      }
+    })
     .catch(err => console.log(err))
   }, (err) => console.log(err))
 }
@@ -101,11 +101,20 @@ getEmail = (e) => {
   })
 }
 
+getPassword = (e) => {
+  this.setState({
+    password: e.target.value
+  })
+}
+*/
   render() {
     return (
-      <div className="grid-container">
-        <Signup getName={this.getUserName} getEmail={this.getEmail} createUser={this.createUser}/>
-      </div>
+      <BrowserRouter>
+        <div className='grid-container'>
+          <Route exact path='/' component={Signup} />
+          <Route exact path='/home' component={Home} />
+        </div>
+      </BrowserRouter>
     );
   }
 }
