@@ -1,25 +1,22 @@
 import React from 'react';
 
-let Signup = (props) => {
+let Login = (props) => {
 
-  let name = null;
   let email = null;
   let password = null;
 
-let CreateUser = (e) => {
+let GetUser = (e) => {
       e.preventDefault();
 
-        fetch('http://localhost:5000/signup', {
+        fetch('http://localhost:5000/login', {
           method: "POST",
           headers: {
             "Accept": "application/json, text/plain",
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            name: name.value,
             email: email.value,
             password: password.value,
-            active: true
           })
         })
         .then(data => {
@@ -40,13 +37,10 @@ let CreateUser = (e) => {
   return(
     <div>
       <div className='grid-item'>
-        <h1>Sign Up</h1>
+        <h1>Log In</h1>
       </div>
       <div className='grid-item'>
-        <form onSubmit={CreateUser}>
-          <div className='grid-item'>
-            <input placeholder='Enter Name' ref={(text) => {name = text}} required></input>
-          </div>
+        <form onSubmit={GetUser}>
           <div className='grid-item'>
             <input placeholder='Email' ref={(text) => {email = text}} required></input>
           </div>
@@ -60,4 +54,4 @@ let CreateUser = (e) => {
   )
 }
 
-export default Signup;
+export default Login;

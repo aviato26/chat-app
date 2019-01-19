@@ -20,9 +20,41 @@ app.post('/signup', createUser, (req, res) => {
   res.send(user)
 });
 
+app.post('/login', (req, res) => {
+  users.find({
+    where: {
+      email: req.body.email,
+      password: req.body.password
+    }
+  })
+  .then(data => {
+    let user = {id: data.id}
+      res.send(user)
+  })
+  .catch(err => res.send(err))
+})
+
+app.post('/userData', (req, res) => {
+  users.findById(req.body.id)
+  .then(data => {
+    data.update({
+      latitude: req.body.lat,
+      longitude: req.body.long
+    })
+    .catch(err => res.send(err))
+  })
+  users.findAll()
+  .then(data => {
+    return new Array(...data).filter(c => {
+      return (c.id !== parseInt(req.body.id)) && (c.latitude - req.body.lat < 0.000277) && (c.longitude - req.body.long < 0.000277) && (c.latitude !== null && c.longitude !== null)
+    })
+  })
+  .then(data => res.send(data))
+  .catch(data => console.log(data))
+})
+
 app.get('/signout', (req, res) => {
   users.findAll()
-  .then(data => data)
   .then(data => res.send(data))
   .catch(err => res.send(err))
 })
