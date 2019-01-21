@@ -1,10 +1,13 @@
 
 const express = require('express');
 const app = express();
+const server = require('http').Server(app);
 const users = require('./models').User;
 const createUser = require('./serverMiddleWare/setCoordinates.js');
 const parser = require('body-parser');
-const sql = require('./models').sequelize
+const sql = require('./models').sequelize;
+const socket = require('socket.io')(server);
+let port = process.env.PORT || 5000
 
 app.use(parser());
 
@@ -59,7 +62,13 @@ app.get('/signout', (req, res) => {
   .catch(err => res.send(err))
 })
 
+app.post('/connection', (req, res) => {
+  socket.on('connection', (client) => {
+    console.log(client)
+  })
+})
+
 sql.sync()
    .then(() => {
-     app.listen(5000, console.log('server is running'))
+     app.listen(port, console.log('server is running'))
    })
