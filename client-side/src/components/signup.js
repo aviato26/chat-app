@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 let Signup = (props) => {
 
@@ -55,6 +56,7 @@ let CreateUser = (e) => {
           </div>
             <button style={{width: '50px', height: '50px'}}>Start</button>
         </form>
+        <Link to='login'><button>Log In</button></Link>
         </div>
     </div>
   )

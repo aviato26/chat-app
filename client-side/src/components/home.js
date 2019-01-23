@@ -8,7 +8,10 @@ class Home extends React.Component{
     super(props);
     this.state = {
       names: [],
-      talkbox: false
+      conversation: [],
+      otherUserId: null,
+      talkbox: false,
+      socket: ''
     }
   }
 
@@ -17,12 +20,17 @@ class Home extends React.Component{
 
     let options = {
       enableHighAccuracy: false,
-      timeout: 5000
+      timeout: 30000
     }
 
     let id;
 
     if(sessionStorage.id){
+
+      this.setState({
+        socket: opensocket.connect('http://localhost:8080')
+      })
+
       id = navigator.geolocation.watchPosition((pos) => {
         fetch('http://localhost:5000/userData', {
           method: "POST",
@@ -39,7 +47,12 @@ class Home extends React.Component{
         .then(data => data.json())
         .then(res => {
           this.setState({
-            names: res.map(c => c.name)
+              names: res.map(c => {
+                return {
+                id: c.id,
+                name: c.name
+              }
+            })
           })
         })
         .catch(err => console.log(err))
@@ -49,29 +62,29 @@ class Home extends React.Component{
     }
   }
 
-activeTalk = () => {
+activeTalk = (e) => {
   this.setState({
-    talkbox: !this.state.talkbox
+    talkbox: !this.state.talkbox,
+    otherUserId: this.state.names.filter(c => c.name === e.target.textContent)
   })
-  fetch('/connection',{
-    method: "POST",
-    headers: {
-      "Accept": "application/json, text/plain",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        id: sessionStorage.id
-    })
+  this.state.socket.emit('setuserid', {
+    id: sessionStorage.id
   })
-    .then(res => console.log(res))
-    .catch(err => console.log(err))
 }
 
-sendText = () => {
-  let socket = opensocket('http://localhost:5000');
-  socket.on('news', (data) => {
-    console.log(data);
-    socket.emit('other event', {my: 'data'})
+sendText = (e) => {
+  let text = document.querySelector('input').value;
+
+  this.state.socket.emit(`private message`, {
+    id: sessionStorage.id,
+    otherUserId: this.state.otherUserId[0].id,
+    text: text
+  })
+
+  this.state.socket.on('output', (data) => {
+    this.setState({
+      conversation: data.text
+    })
   })
 }
 
@@ -80,7 +93,14 @@ sendText = () => {
       if(this.state.talkbox){
         return(
           <div className='grid-item grid-background'>
-            <textarea className='active'></textarea>
+            <ul>
+              {
+                this.state.conversation.map((c,i) => {
+                  return <li key={i}>{c}</li>
+                })
+              }
+            </ul>
+            <input></input>
             <button onClick={this.sendText}>Submit</button>
             <button onClick={this.activeTalk}>X</button>
           </div>
@@ -89,8 +109,8 @@ sendText = () => {
     }
     return(
       <div>
-        <h1>Cool</h1>
-        <Profile userName={this.state.names} talkbox={this.activeTalk}/>
+        <h1>Talkbox</h1>
+        <Profile userName={this.state.names} talkbox={this.activeTalk} />
       </div>
     )
   }

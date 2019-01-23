@@ -6,7 +6,7 @@ let Profile = (props) => {
     <div>
       {
         props.userName.map((c,i) => {
-          return <p onClick={props.talkbox} className='talkbox' key={i}>{c}</p>
+          return <p onClick={props.talkbox} className='talkbox' key={i}>{c.name}</p>
         })
       }
     </div>

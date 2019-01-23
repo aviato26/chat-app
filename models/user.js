@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     name: {
-      type: DataTypes.STRING,
+      type:DataTypes.STRING,
       validate: {
         notEmpty: true
       }
@@ -14,14 +14,15 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     password: {
-      type: DataTypes.STRING,
-        validate: {
-          notEmpty: true
-        }
-      },
+      type:DataTypes.STRING,
+      validate: {
+        notEmpty: true
+      }
+    },
     active: DataTypes.BOOLEAN,
     latitude: DataTypes.INTEGER,
-    longitude: DataTypes.INTEGER
+    longitude: DataTypes.INTEGER,
+    socketId: DataTypes.STRING
   }, {});
   User.associate = function(models) {
     // associations can be defined here

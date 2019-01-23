@@ -6,8 +6,8 @@ const users = require('./models').User;
 const createUser = require('./serverMiddleWare/setCoordinates.js');
 const parser = require('body-parser');
 const sql = require('./models').sequelize;
-const socket = require('socket.io')(server);
-let port = process.env.PORT || 5000
+const socket = require('socket.io')(process.env.PORT || 8080);
+let port = process.env.PORT || 5000;
 
 app.use(parser());
 
@@ -15,6 +15,7 @@ app.use((req, res, next) => {
   // settings for CORS acceptance
  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+ res.header("Access-Control-Allow-Credentials", true)
   next();
 })
 
@@ -56,17 +57,32 @@ app.post('/userData', (req, res) => {
   .catch(data => console.log(data))
 })
 
-app.get('/signout', (req, res) => {
-  users.findAll()
-  .then(data => res.send(data))
-  .catch(err => res.send(err))
-})
+// setting up web socket
 
-app.post('/connection', (req, res) => {
   socket.on('connection', (client) => {
-    console.log(client)
+
+    client.on('setuserid', (msg) => {
+      users.findById(msg.id)
+      .then(data => {
+        data.update({
+          socketId: client.id
+        })
+      })
+      .catch(err => console.log(err))
+    })
+
+    client.on('private message', (msg) => {
+      users.findById(msg.otherUserId)
+      .then(data => {
+        socket.sockets.to(data.socketId).emit('output', msg)
+      })
+    })
+
+    client.on('disconnect', () => {
+      socket.emit('user disconnected')
+    })
   })
-})
+
 
 sql.sync()
    .then(() => {
