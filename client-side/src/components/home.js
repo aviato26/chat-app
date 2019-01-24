@@ -80,17 +80,25 @@ sendText = (e) => {
     otherUserId: this.state.otherUserId[0].id,
     text: text
   })
-
-  this.state.socket.on('output', (data) => {
-    this.setState({
-      conversation: data.text
-    })
-  })
 }
 
   render(){
     {
       if(this.state.talkbox){
+
+        this.state.socket.on('output', (data) => {
+          let promise = new Promise((resolve, reject) => {
+            if(data.text.length){
+              resolve(data.text)
+            } else {
+              reject('aint working')
+            }
+          })
+          promise.then(data => console.log(data.length))
+          /*this.setState({
+            conversation: [...data.text]
+          })*/
+        })
         return(
           <div className='grid-item grid-background'>
             <ul>

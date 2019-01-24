@@ -74,7 +74,7 @@ app.post('/userData', (req, res) => {
     client.on('private message', (msg) => {
       users.findById(msg.otherUserId)
       .then(data => {
-        socket.sockets.to(data.socketId).emit('output', msg)
+        return socket.sockets.to(data.socketId).emit('output', msg)
       })
     })
 
@@ -82,7 +82,6 @@ app.post('/userData', (req, res) => {
       socket.emit('user disconnected')
     })
   })
-
 
 sql.sync()
    .then(() => {
