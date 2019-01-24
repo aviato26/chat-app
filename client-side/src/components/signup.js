@@ -10,7 +10,7 @@ let Signup = (props) => {
 let CreateUser = (e) => {
       e.preventDefault();
 
-        fetch('http://localhost:5000/signup', {
+        fetch('/signup', {
           method: "POST",
           headers: {
             "Accept": "application/json, text/plain",

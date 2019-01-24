@@ -9,7 +9,7 @@ let Login = (props) => {
 let GetUser = (e) => {
       e.preventDefault();
 
-        fetch('http://localhost:5000/login', {
+        fetch('/login', {
           method: "POST",
           headers: {
             "Accept": "application/json, text/plain",
