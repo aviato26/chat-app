@@ -28,11 +28,11 @@ class Home extends React.Component{
     if(sessionStorage.id){
 
       this.setState({
-        socket: opensocket.connect('http://localhost:5000')
+        socket: opensocket.connect('/')
       })
 
       id = navigator.geolocation.watchPosition((pos) => {
-        fetch('http://localhost:5000/userData', {
+        fetch('/userData', {
           method: "POST",
           headers: {
             "Accept": "application/json, text/plain",
