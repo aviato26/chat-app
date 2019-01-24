@@ -28,7 +28,7 @@ class Home extends React.Component{
     if(sessionStorage.id){
 
       this.setState({
-        socket: opensocket.connect('http://localhost:8080')
+        socket: opensocket.connect('http://localhost:5000')
       })
 
       id = navigator.geolocation.watchPosition((pos) => {

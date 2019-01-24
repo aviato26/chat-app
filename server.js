@@ -1,12 +1,12 @@
 
 const express = require('express');
 const app = express();
-const server = require('http').Server(app);
+const server = require('http').createServer(app);
 const users = require('./models').User;
 const createUser = require('./serverMiddleWare/setCoordinates.js');
 const parser = require('body-parser');
 const sql = require('./models').sequelize;
-const socket = require('socket.io')(process.env.PORT || 8080);
+const socket = require('socket.io')(server);
 let port = process.env.PORT || 5000;
 const path = require('path');
 
@@ -94,5 +94,5 @@ app.post('/userData', (req, res) => {
 
 sql.sync()
    .then(() => {
-     app.listen(port, console.log('server is running'))
+     server.listen(port, console.log('server is running'))
    })
