@@ -103,7 +103,6 @@ sendText = (e) => {
           })
         })
       })
-      console.log(this.state)
         return(
           <div className='grid-item grid-background' style={{textAlign: 'center'}}>
             <p style={{fontSize: '1.5em'}}>{this.state.conversation}</p>
