@@ -8,6 +8,7 @@ const parser = require('body-parser');
 const sql = require('./models').sequelize;
 const socket = require('socket.io')(process.env.PORT || 8080);
 let port = process.env.PORT || 5000;
+const path = require('path');
 
 app.use(parser());
 
@@ -72,9 +73,10 @@ app.post('/userData', (req, res) => {
     })
 
     client.on('private message', (msg) => {
+
       users.findById(msg.otherUserId)
       .then(data => {
-        return socket.sockets.to(data.socketId).emit('output', msg)
+        socket.sockets.to(data.socketId).emit('output', msg)
       })
     })
 
@@ -82,6 +84,13 @@ app.post('/userData', (req, res) => {
       socket.emit('user disconnected')
     })
   })
+
+  if(process.env.NODE_ENV === 'production'){
+    app.use(express.static('client-side/build'));
+    app.get('*', (req, res) => {
+      res.sendFile(path.resolve(__dirname, 'client-side', 'build', 'index.html'))
+    })
+  }
 
 sql.sync()
    .then(() => {

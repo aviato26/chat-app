@@ -8,7 +8,7 @@ class Home extends React.Component{
     super(props);
     this.state = {
       names: [],
-      conversation: [],
+      conversation: '',
       otherUserId: null,
       talkbox: false,
       socket: ''
@@ -80,37 +80,36 @@ sendText = (e) => {
     otherUserId: this.state.otherUserId[0].id,
     text: text
   })
+
 }
+
 
   render(){
     {
+      let talking = [];
       if(this.state.talkbox){
 
-        this.state.socket.on('output', (data) => {
+        this.state.socket.once('output', (data) => {
           let promise = new Promise((resolve, reject) => {
-            if(data.text.length){
-              resolve(data.text)
-            } else {
-              reject('aint working')
-            }
-          })
-          promise.then(data => console.log(data.length))
-          /*this.setState({
-            conversation: [...data.text]
-          })*/
+          if(data.text.length){
+            resolve(data.text)
+          } else {
+            reject('aint working')
+          }
         })
+        promise.then(data => {
+          this.setState({
+            conversation: data
+          })
+        })
+      })
+      console.log(this.state)
         return(
-          <div className='grid-item grid-background'>
-            <ul>
-              {
-                this.state.conversation.map((c,i) => {
-                  return <li key={i}>{c}</li>
-                })
-              }
-            </ul>
+          <div className='grid-item grid-background' style={{textAlign: 'center'}}>
+            <p style={{fontSize: '1.5em'}}>{this.state.conversation}</p>
             <input></input>
-            <button onClick={this.sendText}>Submit</button>
-            <button onClick={this.activeTalk}>X</button>
+            <button onClick={this.sendText} style={{background: 'white'}}>Submit</button>
+            <button onClick={this.activeTalk} style={{width: '10%', height: '10%', background: 'white', display: 'block', margin: '5% auto'}}>X</button>
           </div>
         )
       }
