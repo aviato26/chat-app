@@ -40,7 +40,7 @@ class TalkBox extends React.Component{
         otherUserId: sessionStorage.interaction,
       })
       // this function does the same thing as the emit function above but is the only way to establish connection
-      // so far
+      // so far (the first message will not send without calling the sendText function twice initially)
       this.sendText()
     })
     .catch(err => console.log(err))
@@ -79,7 +79,7 @@ class TalkBox extends React.Component{
 
   render(){
     return(
-      <div>
+      <div className='grid-container'>
         <ul>
           {
             this.state.messages.map((c,i) => {
@@ -87,9 +87,9 @@ class TalkBox extends React.Component{
             })
           }
         </ul>
-        <input onChange={this.onChange}></input>
-        <button onClick={this.sendText} style={{background: 'white'}}>Submit</button>
-        <button onClick={this.backHome} style={{width: '10%', height: '10%', background: 'white', display: 'block', margin: '5% auto'}}>X</button>
+        <input style={{height: '30px'}} onChange={this.onChange}></input>
+        <button onClick={this.sendText} style={{background: 'white', height: '30px'}}>Submit</button>
+        <button onClick={this.backHome} style={{width: '30px', height: '30px', background: 'white', display: 'block', margin: '5% auto'}}>X</button>
       </div>
     )
   }
