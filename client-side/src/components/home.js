@@ -8,9 +8,9 @@ class Home extends React.Component{
     super(props);
     this.state = {
       names: [],
-      conversation: '',
+      conversation: [],
       otherUserId: null,
-      talkbox: false,
+      text: '',
       socket: ''
     }
   }
@@ -26,10 +26,6 @@ class Home extends React.Component{
     let id;
 
     if(sessionStorage.id){
-
-      this.setState({
-        socket: opensocket.connect('/')
-      })
 
       id = navigator.geolocation.watchPosition((pos) => {
         fetch('/userData', {
@@ -63,30 +59,32 @@ class Home extends React.Component{
   }
 
 activeTalk = (e) => {
-  this.setState({
-    talkbox: !this.state.talkbox,
+  /*this.setState({
     otherUserId: this.state.names.filter(c => c.name === e.target.textContent)
-  })
-  this.state.socket.emit('setuserid', {
-    id: sessionStorage.id
-  })
+  })*/
+  let otherUserId = this.state.names.filter(c => e.target.textContent === c.name)
+  sessionStorage.interaction = otherUserId[0].id
+  this.props.history.replace('/message')
 }
 
-sendText = (e) => {
-  let text = document.querySelector('input').value;
-
+/*
+sendText = () => {
   this.state.socket.emit(`private message`, {
     id: sessionStorage.id,
     otherUserId: this.state.otherUserId[0].id,
-    text: text
+    text: this.state.text
   })
-
 }
 
+onChange = (e) => {
+  this.setState({
+    text: e.target.value
+  })
+}
+*/
 
   render(){
-    {
-      let talking = [];
+    /*{
       if(this.state.talkbox){
 
         this.state.socket.once('output', (data) => {
@@ -99,26 +97,34 @@ sendText = (e) => {
         })
         promise.then(data => {
           this.setState({
-            conversation: data
+            conversation: [this.state.text, ...data]
           })
         })
       })
+
         return(
           <div className='grid-item grid-background' style={{textAlign: 'center'}}>
-            <p style={{fontSize: '1.5em'}}>{this.state.conversation}</p>
-            <input></input>
+              <ul>
+              {
+                this.state.conversation.map((c,i) => {
+                  return <li key={i}>{c}</li>
+                })
+              }
+              </ul>
+            <input onChange={this.onChange}></input>
             <button onClick={this.sendText} style={{background: 'white'}}>Submit</button>
             <button onClick={this.activeTalk} style={{width: '10%', height: '10%', background: 'white', display: 'block', margin: '5% auto'}}>X</button>
           </div>
         )
-      }
-    }
+      } else {
+    }*/
     return(
-      <div>
-        <h1>Talkbox</h1>
+      <div className='grid-container'>
+        <h1 className="victory"><span className="victory-v">T</span>alkBox</h1>
         <Profile userName={this.state.names} talkbox={this.activeTalk} />
       </div>
-    )
+      )
+    //}
   }
 }
 

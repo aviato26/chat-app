@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './talkboxstyles.css'
 
 let Login = (props) => {
 
@@ -36,18 +37,14 @@ let GetUser = (e) => {
     }
 
   return(
-    <div>
-      <div className='grid-item'>
+    <div className='grid-container login'>
+      <div>
         <h1>Log In</h1>
       </div>
-      <div className='grid-item'>
+      <div>
         <form onSubmit={GetUser}>
-          <div className='grid-item'>
             <input placeholder='Email' ref={(text) => {email = text}} required></input>
-          </div>
-          <div className='grid-item'>
             <input placeholder='Password' ref={(text) => {password = text}} required></input>
-          </div>
             <button style={{width: '50px', height: '50px'}}>Start</button>
         </form>
         <Link to='/'><button>Sign Up</button></Link>

@@ -1,12 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand:300');
+@import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
 
 .talkbox {
   height: 150px;
-  width: 150%;
   color: white;
-  margin-left: -26px;
+  text-align: center;
   background-color: #e918bd;
   border-radius: 10px;
   border: 2px solid black
+}
+
+li {
+  list-style: none
 }
 
 .active {
@@ -17,10 +22,88 @@
   transform: translate(-50%, -50%);
 }
 
-.grid-background {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  background-color: lightgrey;
-  z-index: 1;
+.grid-container {
+  background-image: url(background.jpg);
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto auto auto;
+  text-align: center;
+  background-size: cover;
+  width: 100vh
+}
+
+.grid-container .login{
+  grid-template-rows: max-content
+}
+
+.victory {
+  position: relative;
+  font-family: 'Permanent Marker', cursive;
+  font-variant:small-caps;
+  font-size: 180px;
+  -webkit-transform: skew(-15deg,-15deg);
+  padding-left: 80px;
+  background-image: -webkit-linear-gradient(#FF0FF8 0%,  #F9F9F7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  -webkit-filter: drop-shadow(2px 2px 20px #f008b7);
+}
+
+.victory-v {
+  position: relative;
+  background-image: -webkit-linear-gradient(#FF0FF8 0%,  #F9F9F7 100%);
+  -webkit-background-clip: text;
+  padding-right: 18px;
+  margin-right: -18px;
+}
+
+.signupInputs {
+  margin: 1.3em;
+}
+
+.signupInputs input {
+  height: 30px;
+  border-radius: 10px
+}
+
+button {
+  border-radius: 10px;
+  margin: 20px 0
+}
+
+.file {
+  padding-left: 20%;
+  color: white
+}
+
+@media only screen and (min-width: 769px) {
+  .flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .talkbox {
+    width: 49%
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .grid-container {
+    background-image: url(smallbackground.jpg);
+    justify-content: center;
+    grid-template-rows: auto auto auto;
+    width: 100%;
+    height: 100vh
+  }
+
+  .signup {
+    align-content: baseline
+  }
+
+  .victory{
+    font-size: 4em;
+    padding-left: 0;
+    margin: 30px 0
+  }
 }

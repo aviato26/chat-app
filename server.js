@@ -9,6 +9,9 @@ const sql = require('./models').sequelize;
 const socket = require('socket.io')(server);
 let port = process.env.PORT || 5000;
 const path = require('path');
+const multer = require('multer');
+const upload = multer({dest: 'images'});
+const fs = require('fs');
 
 app.use(parser());
 
@@ -25,6 +28,15 @@ app.post('/signup', createUser, (req, res) => {
   res.send(user)
 });
 
+/*
+  // working on this feature
+
+app.post('/image', upload.single('file'), (req, res) => {
+  console.log(req.file)
+  res.sendFile(req.file.path)
+  }
+)
+*/
 app.post('/login', (req, res) => {
   users.find({
     where: {
@@ -40,6 +52,9 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/userData', (req, res) => {
+
+  // using sequelize to update users location every 5 seconds
+
   users.findById(req.body.id)
   .then(data => {
     data.update({
@@ -49,18 +64,23 @@ app.post('/userData', (req, res) => {
     .catch(err => res.send(err))
   })
   users.findAll()
+  // this is checking the users lat and long to see if any other users are near by (this should be about a 100ft radius)
+
   .then(data => {
     return new Array(...data).filter(c => {
       return (c.id !== parseInt(req.body.id)) && (c.latitude - req.body.lat < 0.000277) && (c.longitude - req.body.long < 0.000277) && (c.latitude !== null && c.longitude !== null)
     })
   })
+  // send the filtered data back to client side
   .then(data => res.send(data))
   .catch(data => console.log(data))
 })
 
-// setting up web socket
+// setting up web socket connection
 
   socket.on('connection', (client) => {
+
+// updating client id to db everytime user logs in
 
     client.on('setuserid', (msg) => {
       users.findById(msg.id)
@@ -72,18 +92,18 @@ app.post('/userData', (req, res) => {
       .catch(err => console.log(err))
     })
 
+// uses sequelize to find the other user by there id and sending there message along
+
     client.on('private message', (msg) => {
-
       users.findById(msg.otherUserId)
-      .then(data => {
-        socket.sockets.to(data.socketId).emit('output', msg)
+        .then(data => {
+          socket.to(data.socketId).emit('output', msg)
+        })
       })
-    })
 
-    client.on('disconnect', () => {
-      socket.emit('user disconnected')
-    })
   })
+
+// setup for heroku, basically telling heroku in production use the react build folder for UI
 
   if(process.env.NODE_ENV === 'production'){
     app.use(express.static('client-side/build'));
@@ -91,6 +111,8 @@ app.post('/userData', (req, res) => {
       res.sendFile(path.resolve(__dirname, 'client-side', 'build', 'index.html'))
     })
   }
+
+// method for syncing sql db
 
 sql.sync()
    .then(() => {

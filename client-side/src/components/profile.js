@@ -1,12 +1,12 @@
 import React from 'react';
-import './talkboxstyles.css'
+import './talkboxstyles.css';
 
 let Profile = (props) => {
   return(
-    <div>
+    <div className='flex-container'>
       {
         props.userName.map((c,i) => {
-          return <p onClick={props.talkbox} className='talkbox' key={i}>{c.name}</p>
+          return <p onClick={props.talkbox} className='talkbox grid-item' key={i}>{c.name}</p>
         })
       }
     </div>
