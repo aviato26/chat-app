@@ -1,6 +1,7 @@
 import React from 'react';
 import './talkboxstyles.css';
 import opensocket from 'socket.io-client';
+const openSocket = opensocket()
 
 class TalkBox extends React.Component{
   constructor(props){
@@ -26,7 +27,7 @@ class TalkBox extends React.Component{
     })
     promise.then(() => {
       this.setState({
-        socket: opensocket.connect('/')
+        socket: openSocket.connect()
       })
     })
     .then(() => {
@@ -38,11 +39,11 @@ class TalkBox extends React.Component{
     .then(() => {
       this.state.socket.emit(`private message`, {
         id: sessionStorage.id,
-        otherUserId: sessionStorage.interaction,
+        otherUserId: sessionStorage.interaction
       })
       // this function does the same thing as the emit function above but is the only way to establish connection
       // so far (the first message will not send without calling the sendText function twice initially)
-      this.sendText()
+      this.sendText();
     })
     .catch(err => console.log(err))
   }
@@ -57,13 +58,17 @@ class TalkBox extends React.Component{
 }
 
 // function for sending the both user id's and text to the websocket
-  sendText = () => {
-      this.state.socket.emit(`private message`, {
+  sendText = (e) => {
+    e.preventDefault();
+      this.state.socket.emit('private message', {
         id: sessionStorage.id,
         otherUserId: sessionStorage.interaction,
         text: this.state.text
       })
       this.anotherText()
+      this.setState({
+        text: ''
+      })
   }
 
 // will update state on each keystroke in the input element
@@ -88,9 +93,11 @@ class TalkBox extends React.Component{
             })
           }
         </ul>
-        <input style={{height: '30px'}} onChange={this.onChange}></input>
-        <button onClick={this.sendText} style={{background: 'white', height: '30px'}}>Submit</button>
-        <button onClick={this.backHome} style={{width: '30px', height: '30px', background: 'white', display: 'block', margin: '5% auto'}}>X</button>
+          <form onSubmit={this.sendText}>
+            <input style={{height: '30px'}} onChange={this.onChange} value={this.state.text}></input>
+            <button onClick={this.sendText} style={{background: 'white', height: '30px'}}>Submit</button>
+            <button onClick={this.backHome} style={{width: '30px', height: '30px', background: 'white', display: 'block', margin: '5% auto'}}>X</button>
+          </form>
       </div>
     )
   }

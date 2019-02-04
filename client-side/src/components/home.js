@@ -1,6 +1,5 @@
 import React from 'react';
 import Profile from './profile.js';
-import opensocket from 'socket.io-client';
 import './talkboxstyles.css';
 
 class Home extends React.Component{
