@@ -26,7 +26,8 @@ let GetUser = (e) => {
         })
         .then(res => {
           if(!!res.id){
-            sessionStorage.id = res.id
+            sessionStorage.id = res.id;
+            sessionStorage.name = res.name;
             props.history.replace('/home')
           } else {
             console.log('form is invalid')
@@ -39,12 +40,12 @@ let GetUser = (e) => {
   return(
     <div className='grid-container login'>
       <div>
-        <h1>Log In</h1>
+        <h1 className='glow'>Log In</h1>
       </div>
       <div>
         <form onSubmit={GetUser}>
-            <input placeholder='Email' ref={(text) => {email = text}} required></input>
-            <input placeholder='Password' ref={(text) => {password = text}} required></input>
+            <input placeholder='Email' ref={(text) => {email = text}} style={{display: 'block'}} required></input>
+            <input placeholder='Password' ref={(text) => {password = text}} style={{display: 'block'}}required></input>
             <button style={{width: '50px', height: '50px'}}>Start</button>
         </form>
         <Link to='/'><button>Sign Up</button></Link>

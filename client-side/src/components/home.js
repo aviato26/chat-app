@@ -59,65 +59,12 @@ class Home extends React.Component{
   }
 
 activeTalk = (e) => {
-  /*this.setState({
-    otherUserId: this.state.names.filter(c => c.name === e.target.textContent)
-  })*/
   let otherUserId = this.state.names.filter(c => e.target.textContent === c.name)
   sessionStorage.interaction = otherUserId[0].id
   this.props.history.replace('/message')
 }
 
-/*
-sendText = () => {
-  this.state.socket.emit(`private message`, {
-    id: sessionStorage.id,
-    otherUserId: this.state.otherUserId[0].id,
-    text: this.state.text
-  })
-}
-
-onChange = (e) => {
-  this.setState({
-    text: e.target.value
-  })
-}
-*/
-
   render(){
-    /*{
-      if(this.state.talkbox){
-
-        this.state.socket.once('output', (data) => {
-          let promise = new Promise((resolve, reject) => {
-          if(data.text.length){
-            resolve(data.text)
-          } else {
-            reject('aint working')
-          }
-        })
-        promise.then(data => {
-          this.setState({
-            conversation: [this.state.text, ...data]
-          })
-        })
-      })
-
-        return(
-          <div className='grid-item grid-background' style={{textAlign: 'center'}}>
-              <ul>
-              {
-                this.state.conversation.map((c,i) => {
-                  return <li key={i}>{c}</li>
-                })
-              }
-              </ul>
-            <input onChange={this.onChange}></input>
-            <button onClick={this.sendText} style={{background: 'white'}}>Submit</button>
-            <button onClick={this.activeTalk} style={{width: '10%', height: '10%', background: 'white', display: 'block', margin: '5% auto'}}>X</button>
-          </div>
-        )
-      } else {
-    }*/
     return(
       <div className='grid-container'>
         <h1 className="victory"><span className="victory-v">T</span>alkBox</h1>

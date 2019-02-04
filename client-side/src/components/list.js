@@ -31,7 +31,8 @@ class TalkBox extends React.Component{
     })
     .then(() => {
       this.state.socket.emit('setuserid', {
-        id: sessionStorage.id
+        id: sessionStorage.id,
+        name: sessionStorage.name
       })
     })
     .then(() => {

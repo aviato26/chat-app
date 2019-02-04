@@ -68,7 +68,9 @@ let CreateUser = (e) => {
   return(
     <div className='grid-container signup'>
       <div className='grid-item'>
-        <h1 data-text="SignUp">SignUp</h1>
+        <h1 data-text="SignUp" className='glow'>
+            SignUp
+        </h1>
       </div>
       <div className='grid-item'>
         <form onSubmit={CreateUser}>

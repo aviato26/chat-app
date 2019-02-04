@@ -45,7 +45,7 @@ app.post('/login', (req, res) => {
     }
   })
   .then(data => {
-    let user = {id: data.id}
+    let user = {id: data.id, name: data.name}
       res.send(user)
   })
   .catch(err => res.send(err))
@@ -79,11 +79,10 @@ app.post('/userData', (req, res) => {
 // setting up web socket connection
 
   socket.on('connection', (client) => {
-
 // updating client id to db everytime user logs in
 
     client.on('setuserid', (msg) => {
-      users.findById(msg.id)
+     users.findById(msg.id)
       .then(data => {
         data.update({
           socketId: client.id
