@@ -1,13 +1,13 @@
 import React from 'react';
 import './talkboxstyles.css';
 import opensocket from 'socket.io-client';
-const openSocket = opensocket()
+
 
 class TalkBox extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      messages: [],
+      messages: [""],
       socket: '',
       text: ''
     }
@@ -18,18 +18,25 @@ class TalkBox extends React.Component{
 // the other users id that was clicked on, after this the private message room is
 // connected between the two users
 
-    let promise = new Promise((resolve, reject) => {
-      if(this.state.socket === ''){
-        resolve(this.state.socket)
-      } else {
-        reject('socket has not connected')
-      }
+this.setState({
+  socket: opensocket.connect()
+})
+
+    let connection = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(this.state.socket !== ''){
+          resolve(this.state.socket)
+        } else {
+          reject('socket has not connected')
+        }
+      }, 5000)
     })
-    promise.then(() => {
+
+    connection/*.then(() => {
       this.setState({
-        socket: openSocket.connect()
+        socket: opensocket.connect()
       })
-    })
+    })*/
     .then(() => {
       this.state.socket.emit('setuserid', {
         id: sessionStorage.id,
@@ -43,29 +50,38 @@ class TalkBox extends React.Component{
       })
       // this function does the same thing as the emit function above but is the only way to establish connection
       // so far (the first message will not send without calling the sendText function twice initially)
-      this.sendText();
     })
     .catch(err => console.log(err))
   }
 
-// function waiting for response from the other user and adds it to state to be displayed
-  anotherText = () => {
-    this.state.socket.once('output', (data) => {
-      this.setState({
-        messages: [...this.state.messages, data.text]
-      })
-  })
-}
+  getSnapshotBeforeUpdate(props, state){
+    if(state.messages !== this.state.messages){
+      console.log(state)
+      return this.state.messages
+    }
+    return null
+  }
+
+  componentDidUpdate(a, b, snapshot){
+    if(snapshot !== null){
+      this.state.socket.once('private message', (data) => {
+        this.setState({
+          messages: [...this.state.messages, data.text]
+        })
+    })
+    }
+  }
 
 // function for sending the both user id's and text to the websocket
-  sendText = (e) => {
-    e.preventDefault();
+  sendText = () => {
       this.state.socket.emit('private message', {
         id: sessionStorage.id,
         otherUserId: sessionStorage.interaction,
         text: this.state.text
       })
-      this.anotherText()
+    this.setState({
+      messages: [...this.state.messages, this.state.text]
+    })
       this.setState({
         text: ''
       })
@@ -93,11 +109,9 @@ class TalkBox extends React.Component{
             })
           }
         </ul>
-          <form onSubmit={this.sendText}>
             <input style={{height: '30px'}} onChange={this.onChange} value={this.state.text}></input>
             <button onClick={this.sendText} style={{background: 'white', height: '30px'}}>Submit</button>
             <button onClick={this.backHome} style={{width: '30px', height: '30px', background: 'white', display: 'block', margin: '5% auto'}}>X</button>
-          </form>
       </div>
     )
   }

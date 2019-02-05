@@ -2,6 +2,7 @@ import React from 'react';
 import Profile from './profile.js';
 import './talkboxstyles.css';
 
+
 class Home extends React.Component{
   constructor(props){
     super(props);
@@ -9,8 +10,7 @@ class Home extends React.Component{
       names: [],
       conversation: [],
       otherUserId: null,
-      text: '',
-      socket: ''
+      text: ''
     }
   }
 
