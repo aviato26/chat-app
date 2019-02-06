@@ -71,6 +71,8 @@ let CreateUser = (e) => {
         <h1 data-text="SignUp" className='glow'>
             SignUp
         </h1>
+        <p className='intro'>once logged in this app will show you everyone logged in within a hundred feet</p>
+        <p className='intro'>click on the desired user to chat with them</p>
       </div>
       <div className='grid-item'>
         <form onSubmit={CreateUser}>
