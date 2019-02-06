@@ -8,7 +8,6 @@ class Home extends React.Component{
     super(props);
     this.state = {
       names: [],
-      conversation: [],
       otherUserId: null,
       text: ''
     }
@@ -58,8 +57,9 @@ class Home extends React.Component{
   }
 
 activeTalk = (e) => {
-  let otherUserId = this.state.names.filter(c => e.target.textContent === c.name)
-  sessionStorage.interaction = otherUserId[0].id
+  let otherUserId = this.state.names.filter(c => e.target.textContent === c.name);
+  sessionStorage.interaction = otherUserId[0].id;
+  sessionStorage.talkingTo = e.target.textContent;
   this.props.history.replace('/message')
 }
 
