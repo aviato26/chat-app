@@ -84,7 +84,12 @@ app.post('/userData', (req, res) => {
   socket.on('connection', (client) => {
 // updating client id to db everytime user logs in
   console.log('connected')
+  /*user[`${msg.id}`] = client.id
 
+  client.on('greet', (msg) => {
+
+  })
+*/
     client.on('setuserid', (msg) => {
      users.findById(msg.id)
       .then(data => {
@@ -93,7 +98,6 @@ app.post('/userData', (req, res) => {
         })
       })
       .catch(err => console.log(err))
-      //user[`${msg.id}`] = client.id
     })
 
 // uses sequelize to find the other user by there id and sending there message along
