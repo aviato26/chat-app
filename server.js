@@ -79,17 +79,27 @@ app.post('/userData', (req, res) => {
 // setting up web socket connection
 
 // if we define a object it works to but exactly the same and without a database so will use sequelize for now
- //let user = {}
+ let user = {}
 
   socket.on('connection', (client) => {
 // updating client id to db everytime user logs in
   console.log('connected')
-  /*user[`${msg.id}`] = client.id
+  //user[`${msg.id}`] = client.id
+
+  client.on('accepted', (msg) => {
+    users.findById(msg.sendTo)
+    .then(data => {
+      socket.to(data.socketId).emit('accepted', { answer: msg.answer})
+    })
+  })
 
   client.on('greet', (msg) => {
-
+    users.findById(msg.chatWith)
+    .then(data => {
+      socket.to(data.socketId).emit('converse', { greet: `${msg.talkingTo} wants to talk, would you like to chat`, otherId: msg.chatWith, id: msg.id})
+    })
   })
-*/
+
     client.on('setuserid', (msg) => {
      users.findById(msg.id)
       .then(data => {
@@ -105,7 +115,7 @@ app.post('/userData', (req, res) => {
     client.on('private message', (msg) => {
       users.findById(msg.otherUserId)
         .then(data => {
-          client.broadcast.to(data.socketId).emit('output', msg)
+          socket.to(data.socketId).emit('output', msg)
         })
           //socket.to(`${user[`${msg.otherUserId}`]}`).emit('output', msg)
       })

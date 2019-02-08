@@ -1,6 +1,6 @@
 import React from 'react';
 import './talkboxstyles.css';
-import opensocket from 'socket.io-client';
+import { Redirect } from 'react-router-dom';
 
 
 class TalkBox extends React.Component{
@@ -8,9 +8,9 @@ class TalkBox extends React.Component{
     super(props);
     this.state = {
       messages: [],
-      socket: opensocket.connect(),
       text: '',
-      talking: []
+      talking: [],
+      switchToHome: false
     }
   }
 
@@ -27,7 +27,7 @@ class TalkBox extends React.Component{
     if(snapshot !== null && state.text !== ""){
 
       // must use once on socket instead of on or the messages will emit several times
-      this.state.socket.once('output', (data) => {
+      this.props.socket.once('output', (data) => {
         this.setState({
           messages: [...this.state.messages, data.text],
           talking: [...this.state.talking, sessionStorage.talkingTo]
@@ -38,11 +38,11 @@ class TalkBox extends React.Component{
 
 // function for sending the both user id's and text to the websocket
   sendText = () => {
-    this.state.socket.emit('setuserid', {
+    this.props.socket.emit('setuserid', {
       id: sessionStorage.id,
       name: sessionStorage.name
     })
-      this.state.socket.emit('private message', {
+      this.props.socket.emit('private message', {
         id: sessionStorage.id,
         otherUserId: sessionStorage.interaction,
         text: this.state.text
@@ -65,10 +65,15 @@ class TalkBox extends React.Component{
 
 // will send user back to the home page
   backHome = () => {
-    this.props.history.replace('/home')
+    this.setState({
+      switchToHome: true
+    })
   }
 
   render(){
+    if(this.state.switchToHome){
+      return <Redirect to='/home' />
+    }
     return(
       <div className='grid-container'>
         <ul>
