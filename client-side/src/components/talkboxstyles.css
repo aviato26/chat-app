@@ -10,11 +10,28 @@
   border: 2px solid black
 }
 
+.talkbox:hover {
+  background-color: #b918bd
+}
+
+.talkbox:active {
+  background-color: #a918bd;
+  box-shadow: 0 5px #222;
+  transform: translateY(4px);
+}
+
 .talking {
   position: absolute;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
   width: 100%;
-  height: 100%;
-  color: white
+  height: 100%
+}
+
+.acceptButton {
+  width: 20%;
+  height: 10%;
+  margin: 40px;
 }
 
 .talk {

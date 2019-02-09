@@ -73,6 +73,7 @@ let CreateUser = (e) => {
         </h1>
         <p className='intro'>once logged in this app will show you everyone logged in within a hundred feet</p>
         <p className='intro'>click on the desired user to chat with them</p>
+        <p className='intro'>if the other user accepts you will be redirected to the private chat room</p>
       </div>
       <div className='grid-item'>
         <form onSubmit={CreateUser}>

@@ -134,8 +134,8 @@ denyChat = () => {
         <Profile userName={this.state.names} talkbox={this.activeTalk} />
         <div className={this.state.hideGreeting}>
           <p>{this.state.chatWith}</p>
-          <button onClick={this.goToChatRoom}>Yes</button>
-          <button onClick={this.denyChat}>No</button>
+          <button className='acceptButton' onClick={this.goToChatRoom}>Yes</button>
+          <button className='acceptButton' onClick={this.denyChat}>No</button>
         </div>
       </div>
       )
