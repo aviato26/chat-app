@@ -14,26 +14,13 @@ class TalkBox extends React.Component{
     }
   }
 
-  getSnapshotBeforeUpdate(props, state){
-    if(state.messages !== this.state.messages){
-      return this.state.messages
-    }
-    return null
-  }
-
-  componentDidUpdate(props, state, snapshot){
-    // must check for state text or will emit to socket multiple times
-
-    if(snapshot !== null && state.text !== ""){
-
-      // must use once on socket instead of on or the messages will emit several times
-      this.props.socket.once('output', (data) => {
-        this.setState({
-          messages: [...this.state.messages, data.text],
-          talking: [...this.state.talking, sessionStorage.talkingTo]
-        })
+  componentDidMount(){
+    this.props.socket.on('output', (data) => {
+      this.setState({
+        messages: [...this.state.messages, data.text],
+        talking: [...this.state.talking, sessionStorage.talkingTo]
       })
-    }
+    })
   }
 
 // function for sending the both user id's and text to the websocket

@@ -12,6 +12,7 @@ const path = require('path');
 const multer = require('multer');
 const upload = multer({dest: 'images'});
 const fs = require('fs');
+socket.set('transports', ['websocket'])
 
 app.use(parser());
 

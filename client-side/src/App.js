@@ -11,9 +11,13 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      socket: opensocket.connect()
+      socket: opensocket.connect('http://localhost:5000', {
+        upgrade: false,
+        transports: ['websocket']
+      })
     }
   }
+
   render() {
     return (
       <BrowserRouter>
@@ -21,7 +25,7 @@ class App extends Component {
           <Route exact path='/' component={Signup} />
           <Route exact path='/home' render={() => <Home socket={this.state.socket}/>} />
           <Route exact path='/login' component={Login} />
-          <Route exact path='/message' render={() => <TalkBox socket={this.state.socket}/>} />
+          <Route exact path='/message' render={() => <TalkBox socket={this.state.socket} />} />
         </div>
       </BrowserRouter>
     );
