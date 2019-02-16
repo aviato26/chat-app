@@ -11,10 +11,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      socket: opensocket.connect('http://localhost:5000', {
-        upgrade: false,
-        transports: ['websocket']
-      })
+      socket: opensocket.connect()
     }
   }
 
