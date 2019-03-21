@@ -83,10 +83,6 @@ let CreateUser = (e) => {
           <div className='signupInputs'>
             <input placeholder='Email' ref={(text) => {email = text}} required></input>
           </div>
-          <div className='signupInputs file'>
-            <input type='file' ref={(t) => {image = t}}></input>
-            <img />
-          </div>
           <div className='signupInputs'>
             <input placeholder='Password' ref={(text) => {password = text}} required></input>
           </div>
