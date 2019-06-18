@@ -10,7 +10,6 @@ let Signup = (props) => {
 
 let CreateUser = (e) => {
       e.preventDefault();
-      console.log(image)
         fetch('/signup', {
           method: "POST",
           headers: {

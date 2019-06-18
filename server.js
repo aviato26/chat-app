@@ -78,9 +78,6 @@ app.post('/userData', (req, res) => {
 
 // setting up web socket connection
 
-// if we define a object it works to but exactly the same and without a database so will use sequelize for now
- let user = {}
-
   socket.on('connection', (client) => {
 // updating client id to db everytime user logs in
   console.log('connected')
@@ -119,6 +116,10 @@ app.post('/userData', (req, res) => {
         })
           //socket.to(`${user[`${msg.otherUserId}`]}`).emit('output', msg)
       })
+  })
+
+  socket.on('disconnect', (a) => {
+    console.log(a)
   })
 
 // setup for heroku, basically telling heroku in production use the react build folder for UI
