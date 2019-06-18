@@ -26,7 +26,6 @@ class Home extends React.Component{
       enableHighAccuracy: false,
       timeout: 30000
     }
-
     if(sessionStorage.id){
 
       this.props.socket.emit('setuserid', {
@@ -63,9 +62,9 @@ class Home extends React.Component{
   }
 
   getSnapshotBeforeUpdate(props, state){
-    if(state.chatWith == ''){
+    if(state.chatWith === ''){
       return this.state.chatWith
-    } else if(state.switchToChat == false){
+    } else if(state.switchToChat === false){
       return this.state.switchToChat
     }
     return null
@@ -95,6 +94,16 @@ class Home extends React.Component{
 
   componentWillUnmount(){
     navigator.geolocation.clearWatch(this.state.stopTracking);
+    this.setState({
+      names: [],
+      otherUserId: null,
+      text: '',
+      chatWith: '',
+      talkingTo: null,
+      stopTracking: null,
+      switchToChat: false,
+      hideGreeting: 'talk'
+    })
   }
 
 activeTalk = (e) => {

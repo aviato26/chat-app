@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand:300');
 @import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
 
+/*
+  66ffd9
+  this color green with a light shade of pink might look good for background
+  got the example from awwwards.com/magpie app
+*/
+
 .talkbox {
   height: 150px;
   color: white;
