@@ -21,7 +21,6 @@ class Home extends React.Component{
 
 
   componentDidMount(){
-
     let options = {
       enableHighAccuracy: false,
       timeout: 30000
@@ -94,16 +93,6 @@ class Home extends React.Component{
 
   componentWillUnmount(){
     navigator.geolocation.clearWatch(this.state.stopTracking);
-    this.setState({
-      names: [],
-      otherUserId: null,
-      text: '',
-      chatWith: '',
-      talkingTo: null,
-      stopTracking: null,
-      switchToChat: false,
-      hideGreeting: 'talk'
-    })
   }
 
 activeTalk = (e) => {

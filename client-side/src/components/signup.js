@@ -6,10 +6,17 @@ let Signup = (props) => {
   let name = null;
   let email = null;
   let password = null;
-  let image = {};
+  let image = null;
+  let reader = new FileReader();
 
 let CreateUser = (e) => {
+
       e.preventDefault();
+      reader.onload = () => {
+        sessionStorage.img = reader.result
+      }
+      reader.readAsDataURL(image.files[0])
+
         fetch('/signup', {
           method: "POST",
           headers: {
@@ -84,6 +91,9 @@ let CreateUser = (e) => {
           </div>
           <div className='signupInputs'>
             <input placeholder='Password' ref={(text) => {password = text}} required></input>
+          </div>
+          <div className='signupInputs'>
+            <input placeholder='Picture' type='file' ref={(img) => {image = img}}/>
           </div>
             <button style={{width: '20%', height: '50px'}}>Send</button>
         </form>

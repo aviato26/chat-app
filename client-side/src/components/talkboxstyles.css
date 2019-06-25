@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand:300');
 @import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
+@import url('https://fonts.googleapis.com/css?family=Dosis&display=swap');
 
 /*
   66ffd9
@@ -7,13 +8,22 @@
   got the example from awwwards.com/magpie app
 */
 
+body {
+  background-image: url(background.jpg);
+  background-size: cover;
+}
+
 .talkbox {
-  height: 150px;
+  width: 80%;
+  height: 300px;
+  margin: 10% auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   color: white;
   text-align: center;
-  background-color: #e918bd;
-  border-radius: 10px;
-  border: 2px solid black
+  background-image: linear-gradient(42deg, #330066 45%, #FF0FF8 50%, #330066 45%);
+  border-radius: 20px;
 }
 
 .talkbox:hover {
@@ -48,6 +58,10 @@
   color: white
 }
 
+.flex-container {
+  overflow: scroll;
+}
+
 .glow {
   color: #fff;
   -webkit-animation: glow 1s ease-in-out infinite alternate;
@@ -78,11 +92,9 @@ ul {
 }
 
 .grid-container {
-  background-image: url(background.jpg);
   grid-template-columns: auto auto auto;
   grid-template-rows: auto auto auto auto;
   text-align: center;
-  background-size: cover;
   width: 100vh
 }
 
@@ -131,6 +143,21 @@ button {
   color: white
 }
 
+img {
+  width: 60%;
+  height: 50%;
+  border: 2px solid black;
+  border-radius: 10px;
+  margin: auto;
+}
+
+p {
+  font-family: 'Dosis', sans-serif;
+  font-size: 1.6em;
+  border-bottom: 1px solid white;
+  margin: auto;
+}
+
 @media only screen and (min-width: 769px) {
   .flex-container {
     display: flex;
@@ -139,13 +166,13 @@ button {
   }
 
   .talkbox {
-    width: 49%
+    width: 30%
   }
 }
 
 @media only screen and (max-width: 768px) {
   .grid-container {
-    background-image: url(smallbackground.jpg);
+    /*background-image: url(smallbackground.jpg);*/
     justify-content: center;
     grid-template-rows: auto auto auto;
     width: 100%;
