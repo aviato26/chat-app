@@ -62,7 +62,7 @@ class TalkBox extends React.Component{
       return <Redirect to='/home' />
     }
     return(
-      <div className='grid-container'>
+      <div className='grid-container privateRoom'>
         <ul>
         {
           this.state.messages.map((c,i) => {
@@ -70,9 +70,9 @@ class TalkBox extends React.Component{
           })
         }
         </ul>
-        <input style={{height: '30px'}} onChange={this.onChange} value={this.state.text}></input>
-        <button onClick={this.sendText} style={{background: 'white', height: '30px'}}>Submit</button>
-        <button onClick={this.backHome} style={{width: '30px', height: '30px', background: 'white', display: 'block', margin: '5% auto'}}>X</button>
+        <input onChange={this.onChange} value={this.state.text}></input>
+        <button className='privateRoomButtons' onClick={this.sendText}>Submit</button>
+        <button className='privateRoomButtons' onClick={this.backHome}>Leave</button>
       </div>
     )
   }

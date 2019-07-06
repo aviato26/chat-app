@@ -9,7 +9,7 @@ class Home extends React.Component{
     super(props);
     this.state = {
       names: [],
-      otherUserId: null,
+      otherUserId: undefined,
       text: '',
       chatWith: '',
       talkingTo: null,
@@ -24,8 +24,9 @@ class Home extends React.Component{
 
     let options = {
       enableHighAccuracy: false,
-      timeout: 30000
+      timeout: 500000
     }
+
     if(sessionStorage.id){
 
       this.props.socket.emit('setuserid', {
@@ -94,26 +95,41 @@ class Home extends React.Component{
 
   componentWillUnmount(){
     navigator.geolocation.clearWatch(this.state.stopTracking);
-    this.setState({
-      names: [],
-      otherUserId: null,
-      text: '',
-      chatWith: '',
-      talkingTo: null,
-      stopTracking: null,
-      switchToChat: false,
-      hideGreeting: 'talk'
-    })
   }
 
 activeTalk = (e) => {
-  let otherUserId = this.state.names.filter(c => e.target.textContent === c.name);
-  sessionStorage.interaction = otherUserId[0].id;
-  sessionStorage.talkingTo = e.target.textContent;
-  this.props.socket.emit('greet', {
-    chatWith: sessionStorage.interaction,
-    id: sessionStorage.id,
-    talkingTo: sessionStorage.name
+  // filter all people logged in and set there ids in state
+  this.setState({
+    otherUserId: this.state.names.filter(c => e.target.textContent === c.name)
+  })
+
+  let textContent = e.target.textContent
+
+/*
+  webConnection having trouble connecting so after user clicks on the desired user
+  to talk to the promise will be set to see if there user id is set in state if not
+  error will be logged out
+*/
+
+  let gettingUserId = new Promise((res, rej) => {
+    if(this.state.otherUserId !== undefined){
+      res(this.state.otherUserId);
+    } else {
+      rej(Error('it seems there was no connection or the connection was broken'));
+    }
+  })
+
+  gettingUserId.then((res) => {
+    sessionStorage.interaction = res[0].id;
+    sessionStorage.talkingTo = textContent;
+    this.props.socket.emit('greet', {
+      chatWith: sessionStorage.interaction,
+      id: sessionStorage.id,
+      talkingTo: sessionStorage.name
+    })
+  },
+  (err) => {
+    console.log(err);
   })
 }
 

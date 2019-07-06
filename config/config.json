@@ -1,14 +1,23 @@
 {
   "development": {
-    "storage": "development.db",
-    "dialect": "sqlite"
+    "username": "root",
+    "password": "jcsaves1987",
+    "database": "test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
   },
   "test": {
-    "storage": "test.db",
-    "dialect": "sqlite"
+    "username": "root",
+    "password": "jcsaves1987",
+    "database": "test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
   },
   "production": {
-    "storage": "development.db",
-    "dialect": "sqlite"
+    "username": "root",
+    "password": "jcsaves1987",
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
   }
 }

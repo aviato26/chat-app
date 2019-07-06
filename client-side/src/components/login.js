@@ -37,16 +37,20 @@ let GetUser = (e) => {
         e.target.reset();
     }
 
+/*
+taking banner design for cleaner design
+    <div>
+      <h1 className='glow'>Log In</h1>
+    </div>
+*/
   return(
-    <div className='grid-container login'>
-      <div>
-        <h1 className='glow'>Log In</h1>
-      </div>
-      <div>
+    <div className='grid-container login' style={{display: 'block'}}>
+      <div className='loginForm'>
+      <h1 style={{color: 'white'}}>Log In</h1>
         <form onSubmit={GetUser}>
-            <input placeholder='Email' ref={(text) => {email = text}} style={{display: 'block'}} required></input>
-            <input placeholder='Password' ref={(text) => {password = text}} style={{display: 'block'}}required></input>
-            <button style={{width: '50px', height: '50px'}}>Start</button>
+            <input placeholder='Email' ref={(text) => {email = text}} required></input>
+            <input placeholder='Password' ref={(text) => {password = text}} required></input>
+            <button>Start</button>
         </form>
         <Link to='/'><button>Sign Up</button></Link>
         </div>

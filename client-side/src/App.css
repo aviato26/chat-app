@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: auto;
-  justify-content: center;
+  justify-content: inherit;
   width: 100%;
   height: 100vh
 }

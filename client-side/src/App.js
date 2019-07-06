@@ -20,7 +20,7 @@ class App extends Component {
       <BrowserRouter>
         <div>
           <Route exact path='/' component={Signup} />
-          <Route exact path='/home' render={() => <Home socket={this.state.socket}/>} />
+          <Route exact path='/home' render={() => <Home socket={this.state.socket} />} />
           <Route exact path='/login' component={Login} />
           <Route exact path='/message' render={() => <TalkBox socket={this.state.socket} />} />
         </div>
