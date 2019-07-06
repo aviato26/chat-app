@@ -6,9 +6,9 @@ let Profile = (props) => {
     <div className='flex-container'>
       {
         props.userName.map((c,i) => {
-        return <div key={i} className='talkbox grid-item'>
-                  <img src={sessionStorage.img}/>
-                  <p onClick={props.talkbox}>{c.name}</p>
+        return <div onClick={props.talkbox} key={i} className='talkbox grid-item'>
+                  <img src={localStorage.img}/>
+                  <p>{c.name}</p>
                </div>
         })
       }

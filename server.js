@@ -9,8 +9,6 @@ const sql = require('./models').sequelize;
 const socket = require('socket.io')(server);
 let port = process.env.PORT || 5000;
 const path = require('path');
-const multer = require('multer');
-const upload = multer({dest: 'images'});
 const fs = require('fs');
 
 app.use(parser());
@@ -28,24 +26,15 @@ app.post('/signup', createUser, (req, res) => {
   res.send(user)
 });
 
-/*
-  // working on this feature
-
-app.post('/image', upload.single('file'), (req, res) => {
-  console.log(req.file)
-  res.sendFile(req.file.path)
-  }
-)
-*/
 app.post('/login', (req, res) => {
-  users.find({
+  users.findAll({
     where: {
       email: req.body.email,
       password: req.body.password
     }
   })
   .then(data => {
-    let user = {id: data.id, name: data.name}
+    let user = {id: data[0].id, name: data[0].name}
       res.send(user)
   })
   .catch(err => res.send(err))
@@ -55,7 +44,7 @@ app.post('/userData', (req, res) => {
 
   // using sequelize to update users location every 5 seconds
 
-  users.findById(req.body.id)
+  users.findByPk(req.body.id)
   .then(data => {
     data.update({
       latitude: req.body.lat,
@@ -68,11 +57,13 @@ app.post('/userData', (req, res) => {
 
   .then(data => {
     return new Array(...data).filter(c => {
-      return (c.id !== parseInt(req.body.id)) && (c.latitude - req.body.lat < 0.000277) && (c.longitude - req.body.long < 0.000277) && (c.latitude !== null && c.longitude !== null)
+      return (c.id !== parseInt(req.body.id)) && ((c.latitude - req.body.lat) < 0.000277 || (-c.latitude - -req.body.lat) < 0.000277) && ((c.longitude - req.body.long) < 0.000277 || (-c.longitude - -req.body.long) < 0.000277) && (c.latitude !== null && c.longitude !== null)
     })
   })
   // send the filtered data back to client side
-  .then(data => res.send(data))
+  .then(data => {
+    res.send(data)
+  })
   .catch(data => console.log(data))
 })
 
@@ -84,21 +75,22 @@ app.post('/userData', (req, res) => {
   //user[`${msg.id}`] = client.id
 
   client.on('accepted', (msg) => {
-    users.findById(msg.sendTo)
+    users.findByPk(msg.sendTo)
     .then(data => {
       socket.to(data.socketId).emit('accepted', { answer: msg.answer})
     })
   })
 
   client.on('greet', (msg) => {
-    users.findById(msg.chatWith)
+    console.log(msg)
+    users.findByPk(msg.chatWith)
     .then(data => {
       socket.to(data.socketId).emit('converse', { greet: `${msg.talkingTo} wants to talk, would you like to chat`, otherId: msg.chatWith, id: msg.id})
     })
   })
 
     client.on('setuserid', (msg) => {
-     users.findById(msg.id)
+     users.findByPk(msg.id)
       .then(data => {
         data.update({
           socketId: client.id
@@ -110,16 +102,13 @@ app.post('/userData', (req, res) => {
 // uses sequelize to find the other user by there id and sending there message along
 
     client.on('private message', (msg) => {
-      users.findById(msg.otherUserId)
+      users.findByPk(msg.otherUserId)
         .then(data => {
           socket.to(data.socketId).emit('output', msg)
         })
           //socket.to(`${user[`${msg.otherUserId}`]}`).emit('output', msg)
       })
-  })
 
-  socket.on('disconnect', (a) => {
-    console.log(a)
   })
 
 // setup for heroku, basically telling heroku in production use the react build folder for UI
