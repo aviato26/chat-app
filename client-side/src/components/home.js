@@ -22,6 +22,8 @@ class Home extends React.Component{
 
   componentDidMount(){
 
+    let location;
+
     let options = {
       enableHighAccuracy: false,
       timeout: 500000
@@ -33,7 +35,7 @@ class Home extends React.Component{
         id: sessionStorage.id
       })
 
-      this.state.stopTracking = navigator.geolocation.watchPosition((pos) => {
+      location = navigator.geolocation.watchPosition((pos) => {
         fetch('/userData', {
           method: "POST",
           headers: {
@@ -59,6 +61,9 @@ class Home extends React.Component{
         })
         .catch(err => console.log(err))
       }, (err) => console.log(err), options)
+      this.setState({
+        stopTracking: location
+      })
     }
   }
 
