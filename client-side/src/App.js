@@ -8,6 +8,7 @@ import Home from './components/home.js';
 import './App.css';
 
 class App extends Component {
+
   constructor(props){
     super(props);
     this.state = {

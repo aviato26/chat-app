@@ -117,7 +117,7 @@ activeTalk = (e) => {
 */
 
   let gettingUserId = new Promise((res, rej) => {
-    if(this.state.otherUserId !== undefined){
+    if(this.state.otherUserId !== undefined && this.state.otherUserId.length > 0){
       res(this.state.otherUserId);
     } else {
       rej(Error('it seems there was no connection or the connection was broken'));
@@ -125,6 +125,7 @@ activeTalk = (e) => {
   })
 
   gettingUserId.then((res) => {
+    console.log(res)
     sessionStorage.interaction = res[0].id;
     sessionStorage.talkingTo = textContent;
     this.props.socket.emit('greet', {
